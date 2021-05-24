@@ -50,7 +50,7 @@ int main()
 	int key;
 	int u, v;
 	Graph* head = NULL;
-	printf("[----- [민선홍] [2018038028] -----");
+	printf("[----- [민선홍] [2018038028] -----]");
 
 	do{
 		printf("\n\n");
@@ -59,7 +59,7 @@ int main()
 		printf("----------------------------------------------------------------\n");
 		printf(" Initialize Graph     = z									    \n");
 		printf(" Insert  Vertex       = v       Insert Edge               = e   \n");
-		printf(" Depth first search   = d       Breadth first search      = b   \n");
+		printf(" Depth First Search   = d       Breadth First Search      = b   \n");
 		printf(" Print Graph          = p       Quit                      = q   \n");
 		printf("----------------------------------------------------------------\n");
 
@@ -71,7 +71,7 @@ int main()
 		case 'z' : case 'Z':
 			InitializeGraph(&head);
 			break;
-		case 'v' : case 'v':
+		case 'v' : case 'V':
 			printf("key의 값 = ");
 			fflush(stdout);
 			InsertVertex(head, key);
@@ -87,13 +87,13 @@ int main()
 			printf("key의 값 = ");
 			fflush(stdout);
 			scanf("%d", &key);
-			Depthfirstsearch(head, key);
+			DepthFirstSearch(head, key);
 			break;
 		case 'b' : case 'B':
 			printf("key의 값 = ");
 			fflush(stdout);
 			scanf("%d", &key);
-			Breadthfirstserach(head, key);
+			BreadthFirstSearch(head, key);
 			break;
 		case 'p' : case 'P':
 			PrintGraph(head);
@@ -102,9 +102,56 @@ int main()
 			destroyGraph(&head);
 			break;
 		default:
-			print("다시 입력해주세요\n");
+			printf("다시 입력해주세요\n");
 			break;
 		}
 	}while (command != 'q' && command != 'Q');
 	return 1;
+}
+
+void InitializeGraph(Vertexhead** h) // 그래프 생성 함수
+{
+
+}
+int InsertVertex(Vertexhead *head, int key) // 정점 삽입 함수
+{
+
+}
+int InsertEdge(Vertexhead *head, int u, int v) // 정점 중간에 엣지 삽입 함수
+{
+
+}
+void DepthFirstSearch(Vertexhead *h, int key) // 깊이 우선 탐색 함수
+{
+
+}
+void BreadthFirstSearch(Vertexhead *h, int key) // 넓이 우선 탐색 함수
+{
+
+}
+void PrintGraph(Vertexhead *head) // 그래프 출력 함수
+{
+
+}
+int destroyGraph(Vertexhead **h) // 그래프 초기화 함수
+{
+
+}
+
+int pop()
+{
+
+}
+void push(int i)
+{
+
+}
+
+int deQueue()
+{
+
+}
+void enQueue(int i)
+{
+
 }
