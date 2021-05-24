@@ -74,6 +74,7 @@ int main()
 		case 'v' : case 'V':
 			printf("key의 값 = ");
 			fflush(stdout);
+			scanf("%d", &key);
 			InsertVertex(head, key);
 			break;
 		case 'e' : case 'E':
@@ -113,7 +114,7 @@ void InitializeGraph(Vertexhead** h) // 그래프 생성 함수
 {
 	if(*h != NULL) // h가 가리키는 값이 NULL이 아니면, 할당된 메모리 해제
 	{
-		destoryGraph(h);
+		destroyGraph(h);
 	}
 	*h = (Vertexhead*)malloc(sizeof(Vertexhead) * MAX_VERTEX); // Vertexhead에 대한 메모리 할당
 	for(int i= 0; i < MAX_VERTEX; i++) // 반복문을 사용하여, 메모리가 할당된, 배열 값을 NULL값으로 다 초기화
@@ -141,9 +142,8 @@ int InsertVertex(Vertexhead *h, int key) // 정점 삽입 함수
 	}
 	else // 정점이 있다면, 정점이 존재한다는 메세지 출력
 		printf("정점이 존재합니다.\n");
-
-
 }
+
 int InsertEdge(Vertexhead *h, int u, int v) // 정점 중간에 엣지 삽입 함수
 {
 
@@ -158,6 +158,21 @@ void BreadthFirstSearch(Vertexhead *h, int key) // 넓이 우선 탐색 함수
 }
 void PrintGraph(Vertexhead *h) // 그래프 출력 함수
 {
+	for(int i = 0; i < MAX_VERTEX; i++)
+	{
+		Vertex* tmp = h[i].head;
+		if(tmp != NULL)
+		{
+			printf("\n%d의 인접리스트: ", i);
+		}
+		while (tmp != NULL)
+		{
+			if(tmp -> key != -1)
+				printf("%d -> ", tmp -> key);
+		tmp = tmp -> link; // 다음 노드로 이동
+		}
+
+	}
 
 }
 int destroyGraph(Vertexhead **h) // 그래프 초기화 함수
