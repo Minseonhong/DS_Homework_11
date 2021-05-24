@@ -29,7 +29,7 @@ void enQueue(int i);
 
  /* 스택 */
 typedef struct stackNode{
-	int a;
+	int data;
 	struct stackNode* link;
 }stackNode;
 stackNode* top;
@@ -146,26 +146,113 @@ int InsertVertex(Vertexhead *h, int key) // 정점 삽입 함수
 
 int InsertEdge(Vertexhead *h, int u, int v) // 정점 중간에 엣지 삽입 함수
 {
+	int a = 0; // 정수형 변수 a 생성한 뒤, 0 대입
+	Vertex *tmp = h[u].head; // Vertex의 포인터변수 tmp를 생성한 뒤, u의 값의 h 배열 헤더를 대입
+	Vertex *node = (Vertex*)malloc(sizeof(Vertex)); // Vertex의 포인터형 변수 node 메모리 동적 할당
+	node -> key = v; // node가 가리키는 key의 값에 v 대입
+	node -> link = NULL; // node -> link의 값을 NULL로 초기화
+
+	if(!tmp) // 입력한 정점이 존재하지 않는다면, 존재하지 않는다는 문구 출력
+	{
+		printf("입력한 정점 %d가 존재하지 않습니다\n", u);
+		return 1;
+	}
+	if (tmp -> key == -1) // 연결된 노드가 없는 경우
+	{
+		h[u].head = node; // u값이 있는 배열 헤드가 직접 노드를 연결
+		return 1;
+	}
+	else // 연결된 노드가 있는 경우
+	{
+		while(tmp -> link != NULL)
+		{
+			if(tmp -> key == v) // 이미 연결된 정점들을 똑같이 입력한다면 연결하지 않음
+			{
+				break;
+			}
+			tmp = tmp -> link; // tmp 에 tmp -> link의 값을 넣어 마지막노드로 이동
+		}
+	}
+	if(tmp -> key != v)
+	{
+		tmp -> link = node; // 그 뒤에 노드 연결
+	}
 
 }
 void DepthFirstSearch(Vertexhead *h, int key) // 깊이 우선 탐색 함수
 {
-
+	if(h[key].head == NULL)
+	{
+		printf("입력한 정점 %d가 존재하지 않습니다.\n", key);
+		return 0;
+	}
+	Vertex* v;
+	top = NULL; // top 설정
+	push(key); // 시작 정점 스택에 저장
+	printf("%2d", key); // 처음 전달된 노드 출력
+	visited[key] = TRUE; // 출력된 노드를 방문했다고 표시
+	while(top!= NULL) // 스택이 공백이 아닌동안 탐색 반복
+	{
+		v = h[key].head;
+		while(v)
+		{
+			if(!visited[v->key]) // 방문이 안되었다는 조건문 실행
+			{
+				push(v->key); // 해당 정점 스택에 삽입
+				visited[v->key] = TRUE; // 방문했다고 표시
+				printf("%2d", v->key); // 정점 출력
+				key = v -> key;
+				v = h[key].head;
+			}
+			else
+				v = v -> link; // 현재 정점이 이미 방문한 정점인 경우
+		}
+		key = pop(); // 더 이상 순회할 정점이 없는 경우에 pop을하여 삭제
+	}
+	for(int i= 0; i < MAX_VERTEX; i++) // 방문 표시 초기화
+	{
+		visited[i] = FALSE;
+	}
 }
 void BreadthFirstSearch(Vertexhead *h, int key) // 넓이 우선 탐색 함수
 {
-
+	if(h[key].head == NULL)
+	{
+		printf("입력한 정점 %d가 존재하지 않습니다.\n", key);
+		return 0;
+	}
+	Vertex *v;
+	printf("%2d", key); // 처음 전달된 노드 출력
+	visited[key] = TRUE; // 출력된 노드를 방문한 거승로 표시
+	enQueue(key); // 시작정점 큐에 저장
+	while(front != rear) // front와 rear의 값이 같아질 때 까지 반복
+	{
+		key = deQueue();
+		for(v= h[key].head; v; v = v->link)
+		{
+			if(!visited[v->key]) // 방문이 안되어있따면
+			{
+				printf("%2d", v -> key); // 정점출력
+				enQueue(v -> key); // 해당 정점 큐에 삽입
+				visited[v->key] = TRUE; // 방문으로 표시
+			}
+		}
+	}
+	for(int i = 0; i < MAX_VERTEX; i++) // 방문표시 초기화 하는 함수
+	{
+		visited[i] = FALSE;
+	}
 }
 void PrintGraph(Vertexhead *h) // 그래프 출력 함수
 {
 	for(int i = 0; i < MAX_VERTEX; i++)
 	{
 		Vertex* tmp = h[i].head;
-		if(tmp != NULL)
+		if(tmp != NULL) // tmp가 NULL이 아닐 때 출력
 		{
 			printf("\n%d의 인접리스트: ", i);
 		}
-		while (tmp != NULL)
+		while (tmp != NULL) // tmp가 NULL이 될 동안
 		{
 			if(tmp -> key != -1)
 				printf("%d -> ", tmp -> key);
@@ -194,20 +281,37 @@ int destroyGraph(Vertexhead **h) // 그래프 초기화 함수
 	(*h) = NULL;
 }
 
-int pop()
+int pop() // 스택 삭제
 {
+	int i;
+	stackNode* temp = top;
+	if(top == NULL)
+	{
+		printf("스택이 비었습니다.");
+		return 0;
+	}
+	else
+	{
+		i = temp -> data;
+		top = temp -> link;
+		free(temp);
+		return i;
+	}
 
 }
-void push(int i)
+void push(int i) // 스택 삽입
 {
-
+	stackNode* temp = (stackNode*)malloc(sizeof(stackNode));
+	temp -> data = i;
+	temp -> link = top;
+	top = temp;
 }
 
-int deQueue()
+int deQueue() // 큐 삭제
 {
-
+	return q[++front];
 }
-void enQueue(int i)
+void enQueue(int i) // 큐 삽입
 {
-
+	q[++rear] = i;
 }
