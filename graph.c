@@ -223,7 +223,7 @@ void BreadthFirstSearch(Vertexhead *h, int key) // 넓이 우선 탐색 함수
 	}
 	Vertex *v;
 	printf("%2d", key); // 처음 전달된 노드 출력
-	visited[key] = TRUE; // 출력된 노드를 방문한 거승로 표시
+	visited[key] = TRUE; // 출력된 노드를 방문한 것으로 표시
 	enQueue(key); // 시작정점 큐에 저장
 	while(front != rear) // front와 rear의 값이 같아질 때 까지 반복
 	{
